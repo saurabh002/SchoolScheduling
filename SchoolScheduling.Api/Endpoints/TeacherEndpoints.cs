@@ -1,82 +1,80 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using SchoolScheduling.Dtos;
 using SchoolScheduling.Entities;
 
 namespace SchoolScheduling.Endpoints{
-    public static class TeacherEndpoints{
-
-        public static void MapTeacherEndpoints(this WebApplication app)
+    public static class TeacherEndpoints
+    {   
+        public static void MapTeacherEndpoints(this IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("/api/teachers").WithTags("Teachers");
 
+            group.MapGet("/", GetAllTeachers);
+            group.MapGet("/{id}", GetTeacherById);
             group.MapPost("/", CreateTeacher);
-            group.MapGet("/{id:int}", GetTeacher);
-            group.MapGet("/", GetTeachers);
+            // group.MapPut("/{id}", UpdateTeacher);
+            group.MapDelete("/{id}", DeleteTeacher);
         }
 
-        private static async Task<Results<Created<TeacherDto>, ValidationProblem, Conflict<string>>> CreateTeacher(
-            CreateTeacherDto dto, SchoolDbContext db)
+        private static async Task<IResult> GetAllTeachers(SchoolDbContext db)
         {
-            using var transaction = await db.Database.BeginTransactionAsync();
-
-            try
-            {
-                var teacher = new Teacher
-                {
-                    Name = dto.Name.Trim(),
-                    Department = dto.Department?.Trim(),
-                    Email = dto.Email?.Trim().ToLowerInvariant(),
-                    Phone = dto.Phone?.Trim(),
-                    IsActive = true
-                };
-                db.Teachers.Add(teacher);
-                await db.SaveChangesAsync(); // need teacher.Id before adding schedule rows
-
-                foreach (var row in dto.Schedule)
-                {
-                    db.TimetableEntries.Add(new TimetableEntry
-                    {
-                        TeacherId = teacher.Id,
-                        DayOfWeek = row.DayOfWeek,
-                        PeriodId = row.PeriodId,
-                        ClassSectionId = row.ClassSectionId,
-                        Subject = row.Subject
-                    });
-                }
-                await db.SaveChangesAsync(); // throws if unique constraint violated (double-booked slot)
-
-                await transaction.CommitAsync();
-
-                var result = new TeacherDto(teacher.Id, teacher.Name, teacher.Department, teacher.Email, teacher.Phone, teacher.IsActive);
-                return TypedResults.Created($"/api/teachers/{teacher.Id}", result);
-            }
-            catch (DbUpdateException)
-            {
-                await transaction.RollbackAsync();
-                // Hits this if a Day+Period combo is already taken - either by this same teacher twice,
-                // or because that class section already has someone else scheduled then.
-                return TypedResults.Conflict("One or more schedule slots conflict with an existing entry.");
-            }
-        }
-        private static async Task<Ok<List<TeacherDto>>> GetTeachers(SchoolDbContext db, bool activeOnly = true)
-        {
-            var query = db.Teachers.AsQueryable();
-            if (activeOnly) query = query.Where(t => t.IsActive);
-
-            var teachers = await query
+            var teachers = await db.Teachers
                 .Select(t => new TeacherDto(t.Id, t.Name, t.Department, t.Email, t.Phone, t.IsActive))
                 .ToListAsync();
 
-            return TypedResults.Ok(teachers);
+            return Results.Ok(teachers);
         }
 
-        private static async Task<Results<Ok<TeacherDto>, NotFound>> GetTeacher(int id, SchoolDbContext db)
+        private static async Task<IResult> GetTeacherById(int id, SchoolDbContext db)
+        {
+            var teacher = await db.Teachers
+                .Where(t => t.Id == id)
+                .Select(t => new TeacherDto(t.Id, t.Name, t.Department, t.Email, t.Phone, t.IsActive))
+                .FirstOrDefaultAsync();
+
+            return teacher is null ? Results.NotFound() : Results.Ok(teacher);
+        }
+
+        private static async Task<IResult> CreateTeacher(CreateTeacherDto dto, SchoolDbContext db)
+        {
+            var teacher = new Teacher
+            {
+                Name = dto.Name,
+                Department = dto.Department,
+                Email = dto.Email,
+                Phone = dto.Phone
+            };
+
+            db.Teachers.Add(teacher);
+            await db.SaveChangesAsync();
+
+            var result = new TeacherDto(teacher.Id, teacher.Name, teacher.Department, teacher.Email, teacher.Phone, teacher.IsActive);
+            return Results.Created($"/api/teachers/{teacher.Id}", result);
+        }
+
+        // private static async Task<IResult> UpdateTeacher(int id, UpdateTeacherDto dto, SchoolDbContext db)
+        // {
+        //     var teacher = await db.Teachers.FindAsync(id);
+        //     if (teacher is null) return Results.NotFound();
+
+        //     teacher.Name = dto.Name;
+        //     teacher.Department = dto.Department;
+        //     teacher.Email = dto.Email;
+        //     teacher.Phone = dto.Phone;
+        //     teacher.IsActive = dto.IsActive;
+
+        //     await db.SaveChangesAsync();
+        //     return Results.Ok(new TeacherDto(teacher.Id, teacher.Name, teacher.Department, teacher.Email, teacher.Phone, teacher.IsActive));
+        // }
+
+        private static async Task<IResult> DeleteTeacher(int id, SchoolDbContext db)
         {
             var teacher = await db.Teachers.FindAsync(id);
-            if (teacher is null) return TypedResults.NotFound();
+            if (teacher is null) return Results.NotFound();
 
-            return TypedResults.Ok(new TeacherDto(teacher.Id, teacher.Name, teacher.Department, teacher.Email, teacher.Phone, teacher.IsActive));
+            db.Teachers.Remove(teacher);
+            await db.SaveChangesAsync();
+            return Results.NoContent();
         }
     }
 }

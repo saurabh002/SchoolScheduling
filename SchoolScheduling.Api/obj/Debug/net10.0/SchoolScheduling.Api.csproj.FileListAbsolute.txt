@@ -71,3 +71,4 @@
 /Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/SchoolScheduling.Api.pdb
 /Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/SchoolScheduling.Api.genruntimeconfig.cache
 /Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/ref/SchoolScheduling.Api.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/SchoolScheduling.Api.sourcelink.json

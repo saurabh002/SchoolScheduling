@@ -29,5 +29,6 @@ app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
 app.MapTeacherEndpoints();
-
+app.MapTimeTableEndpoints();
+app.MapAbsenceEndpoints();
 app.Run();

@@ -1,0 +1,53 @@
+using System.ComponentModel.DataAnnotations;
+namespace SchoolScheduling.Dtos{
+public record CreateAbsencePeriodDto(
+    int TimetableEntryId,
+    int PeriodId
+);
+
+public record CreateAbsenceDto(
+    int TeacherId,
+    DateOnly Date,
+    List<CreateAbsencePeriodDto> AffectedPeriods
+);
+
+public record AssignSubstituteDto(
+    int SubstituteTeacherId
+);
+
+public record AvailableSubstituteDto(
+    int TeacherId,
+    string Name,
+    int RegularLoad,
+    int SubsTaken,
+    int MissedClasses,
+    int EffectiveLoad
+);
+
+public record PendingSubstitutionDto(
+    int AbsencePeriodId,
+    int AbsentTeacherId,
+    string AbsentTeacherName,
+    string? AbsentTeacherDepartment,
+    int PeriodId,
+    int PeriodNumber,
+    TimeOnly StartTime,
+    TimeOnly EndTime,
+    string ClassSectionName,
+    string? Subject,
+    List<AvailableSubstituteDto> AvailableSubstitutes
+);
+
+public record AssignedSubstitutionDto(
+    int AbsencePeriodId,
+    int AbsentTeacherId,
+    string AbsentTeacherName,
+    int SubstituteTeacherId,
+    string SubstituteTeacherName,
+    int PeriodNumber,
+    TimeOnly StartTime,
+    TimeOnly EndTime,
+    string ClassSectionName,
+    string? Subject
+);
+}
