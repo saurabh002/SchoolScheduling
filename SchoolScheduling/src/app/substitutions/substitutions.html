@@ -1,0 +1,80 @@
+<!-- <div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Substitutions</h1>
+    <div class="date-badge">15/09/2025</div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="metric-title">Unassigned</span>
+      <span class="metric-value text-red">3</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-title">Assigned</span>
+      <span class="metric-value text-green">2</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-title">Absent teachers</span>
+      <span class="metric-value text-white">2</span>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="sub-table">
+      <thead>
+        <tr>
+          <th>ABSENT TEACHER</th>
+          <th>PERIOD</th>
+          <th>TIME</th>
+          <th>CLASS</th>
+          <th>SUBJECT</th>
+          <th>SUBSTITUTE (SORTED BY LOAD · LOWEST FIRST)</th>
+          <th class="text-right">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of substitutions" [class.row-assigned]="row.isAssigned">
+          <td>
+            <div class="teacher-cell">
+              <div class="avatar" [style.background-color]="row.avatarBg">
+                {{ row.initials }}
+              </div>
+              <div class="teacher-info">
+                <span class="teacher-name">{{ row.teacherName }}</span>
+                <span class="teacher-dept">{{ row.department }}</span>
+              </div>
+            </div>
+          </td>
+          
+          <td class="font-bold">{{ row.period }}</td>
+          <td class="text-muted">{{ row.time }}</td>
+          <td class="font-bold">{{ row.className }}</td>
+          <td class="font-medium">{{ row.subject }}</td>
+          
+          <td>
+            <div class="select-wrapper">
+              <select 
+                [(ngModel)]="row.selectedSubstituteId" 
+                class="custom-select"
+                [disabled]="row.isAssigned">
+                <option [ngValue]="null">— select —</option>
+                <option *ngFor="let sub of row.availableSubstitutes" [ngValue]="sub.id">
+                  {{ sub.name }} — R:{{ sub.loadScore }}
+                </option>
+              </select>
+              <span class="select-subtitle">R = regular · S = subs taken · M = missed</span>
+            </div>
+          </td>
+          
+          <td class="text-right">
+            <button 
+              [class]="row.isAssigned ? 'btn-change' : 'btn-assign'" 
+              (click)="toggleAssignment(row)">
+              {{ row.isAssigned ? 'Change' : 'Assign' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->

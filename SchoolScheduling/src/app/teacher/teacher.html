@@ -1,0 +1,35 @@
+<div class="form-page-container">
+  <form [formGroup]="teacherForm" class="grid-form">
+      <h1 class="form-heading">Teacher Profile</h1>
+
+      <mat-form-field appearance="outline" class="field-span-2">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="name" placeholder="Full name">
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="field-span-2">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Email">
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="field-span-2">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" placeholder="Phone number">
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="field-span-2">
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="department">
+          <mat-option value="dev">Development</mat-option>
+          <mat-option value="design">Design</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-actions-full">
+        <button mat-raised-button color="primary" (click)="onSubmit()">
+            Update
+        </button>
+      </div>
+
+  </form>
+</div>

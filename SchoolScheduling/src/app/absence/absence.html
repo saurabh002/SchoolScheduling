@@ -1,0 +1,78 @@
+<div class="absence-page">
+    <h2 class="page-title">Mark Teacher Absence</h2>
+    <div class="card">
+        <div class="form-row">
+            <div class="field">
+                <label for="teacher">Select Teacher:</label>
+                <div class="search-wrap">
+                    <input type="text" id="teacher" placeholder="Search Teacher" [ngModel]="teacherSearch()" (ngModelChange)="teacherSearch.set($event)" />
+                    @if(filteredTeachers().length > 0) {
+                    <ul class="suggestions">
+                        @for (teacher of filteredTeachers(); track teacher) {
+                            <li (click)="selectTeacher(teacher)">
+                                {{ teacher.name }}
+                            </li>
+                        }
+                    </ul>
+                    } @else if (teacherSearch().trim() !== '') {
+                        <p>No teachers found.</p>
+                    }
+                </div>
+            </div>
+            <div class="field">
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" [ngModel]="selectedDate()" (ngModelChange)="selectedDate.set($event)" />
+            </div>
+            <button class="btn btn-primary" (click)="loadSchedules()" [disabled]="!selectedTeacher() || !selectedDate()">Load Schedule</button>
+        </div>
+        <!-- @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+        } -->
+        @if (scheduleLoaded()) {
+            <hr class="divider"/>
+            <div class="info-strip">
+                <div class="info-item">
+                    <strong>Teacher:</strong> {{ selectedTeacher()?.name }}
+                </div>
+                <div class="info-item">
+                    <strong>Day:</strong> {{ selectedDate() | date:'EEEE' }}
+                </div>
+                <div class="info-item">
+                    <strong>Periods today:</strong> {{ periodRows().length }}
+                </div>
+            </div>
+        }
+    </div>
+    @if(scheduleLoaded()){
+        <div class="card">
+            <p class="section-label">Affected Periods</p>
+            <table class="period-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Period</th>
+                        <th>Time</th>
+                        <th>Grade</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (period of periodRows(); track period) {
+                        <tr>
+                            <td><input type="checkbox" [checked]="period.checked" (change)="togglePeriodSelection(period)" /></td>
+                            <td>{{ period.periodNumber }}</td>
+                            <td class="time-col">{{ period.startTime }} - {{ period.endTime }}</td>
+                            <td>{{ period.classSectionName }}</td>
+                            <td>{{ period.subject ?? '-'}}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="footer">
+                <span class="checked-count">{{ checkedPeriods().length }} period(s) selected</span>
+                <button class="btn-ghost" (click)="router.navigate(['/'])">Cancel</button>
+                <button class="btn btn-primary" (click)="saveAbsence()" >Save Absence</button>
+            </div>
+        </div>
+    }
+</div>

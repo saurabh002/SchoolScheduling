@@ -1,0 +1,109 @@
+/* You can add global styles to this file, and also import other style files */
+/* Add this to the very top of your global src/styles.css file */
+/* @import "@angular/material/prebuilt-themes/azure-blue.css"; */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+ .form-page-container{
+    display: flex;
+    margin-top: 30px;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center;   
+    background-color: #f8f9fa; 
+ }
+
+.form-heading{
+    grid-column: span 4;
+    display:flex;
+    justify-content: center;
+    margin-bottom: 40px;
+ }
+
+.override-font{
+  grid-column: span 4;
+  font-size: 15px;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(4, 150px); /* 2 equal columns, 280px each */
+  gap: 16px;                               /* Space between rows and columns */
+  width: max-content;
+}
+
+/* FORCE A SINGLE FIELD TO TAKE THE WIDTH OF TWO FIELDS */
+.field-span-2 {
+  grid-column: span 4; 
+  width: 100% !important; /* Forces it to fill the entire 2-column span */
+}
+
+/* Global width rule for standard fields */
+.grid-form mat-form-field {
+  width: 100%;
+}
+
+
+.tags-container {
+  grid-column: span 4;      /* Spans the full 4-column layout width */
+  display: flex;
+  flex-wrap: wrap;          /* Enables automatic row wrapping */
+  gap: 8px;                 /* Layout separation space between individual chips */
+  width: 100%;
+  box-sizing: border-box;
+}
+/* The styled location chip */
+.location-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;  /* Prevents a single chip text from snapping in half */
+}
+
+.chip-text {
+  margin-right: 8px;
+}
+
+.chip-remove-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.chip-remove-btn:hover {
+  color: #f44336;
+}
+
+/* If using Option A (Centered spanning all 4 columns) */
+.form-actions-full {
+  grid-column: span 4;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* If using Option B (Bottom right corner in column 4) */
+.form-actions-right {
+  grid-column: 4;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.form-actions-right mat-button,
+.form-actions-right button[mat-raised-button] {
+  width: 100%; /* Makes the button perfectly fill your 150px grid cell */
+}

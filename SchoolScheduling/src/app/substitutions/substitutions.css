@@ -1,0 +1,266 @@
+/* ==========================================================================
+   Dashboard Design Variables 
+   ========================================================================== */
+:root {
+  --bg-main: #111111;
+  --bg-card: #181818;
+  --bg-input: #222222;
+  --border-color: #2a2a2a;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --accent-blue: #2196f3;
+  --accent-blue-hover: rgba(33, 150, 243, 0.2);
+  --accent-blue-text: #90caf9;
+  --accent-red: #ff4d4d;
+  --accent-green: #4caf50;
+  --row-assigned-tint: rgba(76, 175, 80, 0.06);
+}
+
+/* ==========================================================================
+   Layout Containers
+   ========================================================================== */
+.dashboard-container {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dashboard-header .date-badge {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   KPI Summary Metrics Grid
+   ========================================================================== */
+.metrics-grid {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.metric-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric-card .metric-title {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.metric-card .metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   The Subscriptions Roster Table
+   ========================================================================== */
+.table-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.sub-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.sub-table thead {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sub-table th {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sub-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  /* Smooth color morphing transition when state updates */
+  transition: background-color 0.25s ease;
+}
+
+.sub-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.sub-table td {
+  padding: 1.25rem 1.5rem;
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   Dynamic Row Toggling State Styles (Your Idea!)
+   ========================================================================== */
+.sub-table tbody tr.row-assigned {
+  background-color: var(--row-assigned-tint);
+}
+
+.sub-table tbody tr.row-assigned td {
+  border-color: rgba(76, 175, 80, 0.15);
+}
+
+.sub-table tbody tr.row-assigned .custom-select {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Teacher Component Elements
+   ========================================================================== */
+.teacher-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.teacher-cell .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.teacher-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.teacher-info .teacher-name {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.teacher-info .teacher-dept {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Custom Native Selection Fields
+   ========================================================================== */
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 240px;
+}
+
+.custom-select {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.6rem 2rem 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  
+  /* Render custom vector dropdown chevron arrows */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.select-wrapper .select-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Action Control Buttons
+   ========================================================================== */
+.btn-assign {
+  background: none;
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--text-main);
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-assign:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-muted);
+}
+
+.btn-change {
+  background: none;
+  border: 1px solid rgba(33, 150, 243, 0.4);
+  background-color: rgba(33, 150, 243, 0.1);
+  color: var(--accent-blue-text);
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-change:hover {
+  background-color: var(--accent-blue-hover);
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   Typography Utility Layout Helpers
+   ========================================================================== */
+.text-red { color: var(--accent-red); }
+.text-green { color: var(--accent-green); }
+.text-white { color: var(--text-main); }
+.text-muted { color: var(--text-muted); }
+.text-right { text-align: right; }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
