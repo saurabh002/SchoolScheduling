@@ -37,6 +37,15 @@ namespace SchoolScheduling
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Absence>()
+                .HasMany(a => a.AffectedPeriods)
+                .WithOne(ap => ap.Absence)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Absence>()
+                .HasIndex(a => new { a.TeacherId, a.Date })
+                .IsUnique();
+
             modelBuilder.Entity<Period>().HasData(
                 new Period { Id = 1, Number = 1, StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(8, 45) },
                 new Period { Id = 2, Number = 2, StartTime = new TimeOnly(8, 45), EndTime = new TimeOnly(9, 30) },

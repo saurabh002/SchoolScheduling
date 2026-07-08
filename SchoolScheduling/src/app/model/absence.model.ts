@@ -45,3 +45,13 @@ export interface AssignedSubstitutionDto {
   subject: string;
 }
 
+export interface AbsencePeriodDto {
+  id: number;
+  timetableEntryId: number;
+  hasSubstitute: boolean;
+}
+
+export interface ExistingAbsenceDto {
+  id: number;
+  periods: AbsencePeriodDto[];
+}

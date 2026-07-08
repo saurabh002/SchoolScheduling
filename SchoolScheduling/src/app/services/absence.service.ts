@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import {
   AssignedSubstitutionDto,
   CreateAbsenceDto,
+  ExistingAbsenceDto,
   PendingSubstitutionDto,
 } from "../model/absence.model";
 
@@ -28,5 +29,24 @@ export class AbsenceService {
       `${this.baseUrl}/api/substitutes/assigned`,
       { params: { date } }
     );
+  }
+
+  assignSubstitute(absencePeriodId: number, substituteTeacherId: number): Observable<{ id: number; teacherId: number; substituteTeacherId: number }> {
+    return this.http.post<{ id: number; teacherId: number; substituteTeacherId: number }>(
+      `${this.baseUrl}/api/substitutes/assign`,
+      { absencePeriodId, substituteTeacherId }
+    );
+  }
+
+  getExistingAbsence(teacherId: number, date: string) {
+    return this.http.get<ExistingAbsenceDto>(`/api/absences?teacherId=${teacherId}&date=${date}`);
+  }
+
+  deleteAbsencePeriod(absencePeriodId: number) {
+    return this.http.delete(`/api/absences/periods/${absencePeriodId}`);
+  }
+
+  deleteAbsence(absenceId: number) {
+    return this.http.delete(`/api/absences/${absenceId}`);
   }
 }

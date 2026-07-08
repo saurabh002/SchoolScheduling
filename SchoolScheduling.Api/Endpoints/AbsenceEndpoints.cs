@@ -11,6 +11,9 @@ namespace SchoolScheduling.Endpoints
             var absenceGroup = app.MapGroup("/api/absences").WithTags("Absences");
 
             absenceGroup.MapPost("/", CreateAbsence);
+            absenceGroup.MapDelete("/absences/{id}", DeleteAbsence);
+            absenceGroup.MapDelete("/absence-periods/{absencePeriodId}", DeleteAbsenceByPeriodId);
+            absenceGroup.MapGet("absences", GetAbsences);
 
             var absencePeriodGroup = app.MapGroup("/api/absence-periods").WithTags("Absences");
             absencePeriodGroup.MapPut("/{id}/assign", AssignSubstitute);
@@ -18,6 +21,74 @@ namespace SchoolScheduling.Endpoints
             var substituteGroup = app.MapGroup("/api/substitutes").WithTags("Substitutions");
             substituteGroup.MapGet("/assigned", GetAssignedSubstitutes);
             substituteGroup.MapGet("/pending", GetPendingSubstitutes);
+            substituteGroup.MapDelete("/{absencePeriodId}/assign", CancelAssignment);
+        }
+
+        private static async Task<IResult> GetAbsences(int teacherId, DateOnly date, SchoolDbContext db)
+        {
+            var absence = await db.Absences
+            .Include(a => a.AffectedPeriods)
+            .FirstOrDefaultAsync(a => a.TeacherId == teacherId && a.Date == date);
+
+            if (absence is null) return Results.NotFound();
+
+            return Results.Ok(new ExistingAbsenceDto(
+                absence.Id,
+                absence.AffectedPeriods.Select(ap => new AbsencePeriodDto(
+                    ap.Id,
+                    ap.TimetableEntryId,
+                    ap.SubstituteTeacherId != null
+                )).ToList()
+            ));
+        }
+
+        private static async Task<IResult> CancelAssignment(int absencePeriodId, SchoolDbContext db)
+        {
+            var period = await db.AbsencePeriods.FindAsync(absencePeriodId);
+            if (period is null) return Results.NotFound();
+            if (period.SubstituteTeacherId is null) return Results.BadRequest("No substitute assigned.");
+
+            period.SubstituteTeacherId = null;
+            await db.SaveChangesAsync();
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> DeleteAbsence(int id, SchoolDbContext db)
+        {
+            var absence = await db.Absences
+                .Include(a => a.AffectedPeriods)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (absence is null) return Results.NotFound();
+
+            bool hasAssignments = absence.AffectedPeriods
+                .Any(ap => ap.SubstituteTeacherId != null);
+
+            if (hasAssignments)
+                return Results.Conflict(new { 
+                    message = "Cannot delete — substitutions already assigned. Remove them first." 
+                });
+
+            db.Absences.Remove(absence); // cascade removes AbsencePeriods via EF
+            await db.SaveChangesAsync();
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> DeleteAbsenceByPeriodId(int absencePeriodId, SchoolDbContext db)
+        {
+            var period = await db.AbsencePeriods
+                .FirstOrDefaultAsync(ap => ap.Id == absencePeriodId);
+
+            if (period is null) return Results.NotFound();
+
+            if (period.SubstituteTeacherId is not null)
+                return Results.Conflict(new {
+                    message = "Substitute already assigned for this period. Please unassign first."
+                });
+
+            db.AbsencePeriods.Remove(period);
+            await db.SaveChangesAsync();
+            return Results.NoContent();
         }
 
         private static async Task<IResult> GetPendingSubstitutes(DateOnly date, SchoolDbContext db)
@@ -145,6 +216,17 @@ namespace SchoolScheduling.Endpoints
 
         private static async Task<IResult> CreateAbsence(CreateAbsenceDto dto, SchoolDbContext db)
         {
+            // duplicate check
+            bool exists = await db.Absences.AnyAsync(a =>
+            a.TeacherId == dto.TeacherId && a.Date == dto.Date);
+
+            if (exists)
+            {
+                return Results.Conflict(new { 
+                    message = "Teacher already marked absent on this date." 
+                });
+            }
+
             var absence = new Absence
             {
                 TeacherId = dto.TeacherId,
