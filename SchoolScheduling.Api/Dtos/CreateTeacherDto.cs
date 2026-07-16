@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace SchoolScheduling.Dtos{
     public record CreateTeacherDto(
+        int Id,
         [Required, MaxLength(100)] string Name,
         [MaxLength(100)] string? Department,
         [EmailAddress, MaxLength(150)] string? Email,

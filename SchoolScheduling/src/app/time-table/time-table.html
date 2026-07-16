@@ -1,58 +1,83 @@
 <div class="time-table-page">
-  <div class="teacher-search">
-      <input type="text" placeholder="Search Teacher" [(ngModel)]="teacherSearch" (input)="onTeacherSearchChange()" />
-      @if(filteredTeachers().length > 0 && isSelected() === false) {
-          <ul class="suggestions">
-              @for (teacher of filteredTeachers(); track teacher) {
-                  <li (click)="selectTeacher(teacher)">
-                      {{ teacher.name }}
-                  </li>
-              }
-          </ul>
-      } @else if (teacherSearch().trim() !== '' && isSelected() === false && filteredTeachers().length === 0) {
-          <p>No teachers found.</p>
-      }   
+  <div class="page-header">
+    <p class="eyebrow">Weekly Planner</p>
+    <h1>Teacher Timetable</h1>
+    <p class="page-copy">Search for a teacher to open the timetable and manage class assignments.</p>
   </div>
 
-  <table class="schedule-grid">
-    <thead>
-      <tr>
-        <th>Period</th>
-        @for (day of days; track day) {
-          <th>{{ day }}</th>
-        }
-      </tr>
-    </thead>
-    <tbody>
-      @for (period of periods; track period) {
-        <tr>
-          <td class="period-label">{{ period }}</td>
-          @for (day of days; track day) {
-            <td class="cell" (click)="openCell(day, period)" [class.highlighted]="assignments().has(cellKey(day, period))">
-              @if (assignments().has(cellKey(day, period))) {
-                <span class="chip">
-                  {{ assignments().get(cellKey(day, period))?.gradeName }}-{{ assignments().get(cellKey(day, period))?.subject }}
-                  <button (click)="removeCell(day, period, $event)">×</button>
-                </span>
-              } @else if (isActive(day, period)) {
-                <div class="inline-picker" (click)="$event.stopPropagation()">
-                  <select [formControl]="gradeControl">
-                    <option value="">Grade</option>
-                    @for (g of grades; track g) { <option [value]="g">{{ g }}</option> }
-                  </select>
-                  <select [formControl]="subjectControl">
-                    <option value="">Subject</option>
-                    @for (s of subjects; track s) { <option [value]="s">{{ s }}</option> }
-                  </select>
-                  <button (click)="confirmCell()">✓</button>
-                </div>
-              } @else {
-                <span class="empty">Free</span>
-              }
-            </td>
+    <div class="search-actions" [class.centered]="!teacherId()">
+    <div class="teacher-search">
+      <input type="text" placeholder="Search Teacher" [(ngModel)]="teacherSearch" (input)="onTeacherSearchChange()" />
+      @if(filteredTeachers().length > 0 && isSelected() === false) {
+        <ul class="suggestions">
+          @for (teacher of filteredTeachers(); track teacher) {
+            <li (click)="selectTeacher(teacher)">
+              {{ teacher.name }}
+            </li>
           }
-        </tr>
+        </ul>
+      } @else if (teacherSearch().trim() !== '' && isSelected() === false && filteredTeachers().length === 0) {
+        <p>No teachers found.</p>
       }
-    </tbody>
-  </table>
+    </div>
+
+    @if (teacherId()) {
+      <button class="profile-button" (click)="viewTeacherProfile(teacherId())" type="button">
+      <span class="arrow">←</span>
+      <span>View Teacher Profile</span>
+      </button>
+    }
+  </div>
+
+  @if (teacherId(); as currentTeacherId) {
+    <div class="table-shell">
+      <table class="schedule-grid">
+        <thead>
+          <tr>
+            <th>Period</th>
+            @for (day of days; track day) {
+              <th>{{ day }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (period of periods; track period) {
+            <tr>
+              <td class="period-label">{{ period }}</td>
+              @for (day of days; track day) {
+                <td class="cell" (click)="openCell(day, period)" [class.highlighted]="assignments().has(cellKey(day, period))">
+                  @if (assignments().has(cellKey(day, period))) {
+                    <span class="chip">
+                      {{ assignments().get(cellKey(day, period))?.gradeName }}-{{ assignments().get(cellKey(day, period))?.subject }}
+                      <button (click)="removeCell(day, period, $event)">×</button>
+                    </span>
+                  } @else if (isActive(day, period)) {
+                    <div class="inline-picker" (click)="$event.stopPropagation()">
+                      <select [formControl]="gradeControl">
+                        <option value="">Grade</option>
+                        @for (g of grades; track g) { <option [value]="g">{{ g }}</option> }
+                      </select>
+                      <select [formControl]="subjectControl">
+                        <option value="">Subject</option>
+                        @for (s of subjects; track s) { <option [value]="s">{{ s }}</option> }
+                      </select>
+                      <button (click)="confirmCell()">✓</button>
+                    </div>
+                  } @else {
+                    <span class="empty">Free</span>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <app-today-substitutions [teacherId]="currentTeacherId" />
+  } @else {
+    <div class="empty-panel">
+      <h2>Select a teacher to begin</h2>
+      <p>The timetable will appear here once you choose a teacher from the search box above.</p>
+    </div>
+  }
 </div>

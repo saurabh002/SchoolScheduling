@@ -13,7 +13,7 @@ export class TeacherService {
         return this.http.get<TeacherModel[]>(`${this.baseUrl}/api/teachers`)
     }
     
-    getTeacher(id: number): Observable<TeacherModel> {
+    getTeacher(id: number | null): Observable<TeacherModel> {
         return this.http.get<TeacherModel>(`${this.baseUrl}/api/teachers/${id}`)
     }
 

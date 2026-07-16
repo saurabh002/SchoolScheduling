@@ -1,0 +1,47 @@
+<!-- substitute-dropdown.component.html -->
+<div class="dropdown-wrap">
+  <button type="button" class="dropdown-trigger" (click)="toggle()">
+    @if (selectedSub()) {
+      <span class="trigger-selected">
+        <span class="trigger-name">{{ selectedSub()!.name }}</span>
+        <span class="trigger-meta">
+          Effective Load: {{ selectedSub()!.effectiveLoad }}
+        </span>
+      </span>
+    } @else {
+      <span class="trigger-placeholder">-- Select Substitute --</span>
+    }
+    <span class="trigger-arrow" [class.open]="isOpen()">▾</span>
+  </button>
+
+  @if (isOpen()) {
+    <div class="dropdown-menu">
+      @if (substitutes().length === 0) {
+        <div class="dropdown-empty">No substitutes available</div>
+      }
+      @for (sub of substitutes(); track sub.teacherId) {
+        <div class="dropdown-item"
+             [class.selected]="sub.teacherId === selected()"
+             (click)="select(sub)">
+          <div class="item-header">
+            <span class="item-name">{{ sub.name }}</span>
+            <span class="item-load {{ getLoadClass(sub.effectiveLoad) }}">
+              Load: {{ sub.effectiveLoad }}
+            </span>
+          </div>
+          <div class="item-meta">
+            <span>Regular: {{ sub.regularLoad }}</span>
+            <span>Subs Taken: {{ sub.subsTaken }}</span>
+            <span>Missed: {{ sub.missedClasses }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+@if (warningVisible()) {
+  <div class="flash-warning">
+    <span class="blink-icon">⚠️</span>
+    This teacher has only 1 free period left today.
+  </div>
+}

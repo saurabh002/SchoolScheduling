@@ -1,22 +1,38 @@
 <div class="form-page-container">
   <form [formGroup]="teacherForm" class="grid-form">
       <h1 class="form-heading">Teacher Profile</h1>
+      <p class="form-subcopy">Add teacher details once and reuse them across timetable, absence, and substitution workflows.</p>
 
-      <mat-form-field appearance="outline" class="field-span-2">
-        <mat-label>Full Name</mat-label>
-        <input matInput formControlName="name" placeholder="Full name">
+      <p class="section-label field-span-2">Personal Details</p>
+
+      <mat-form-field appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" placeholder="First name">
         <mat-icon matSuffix>person</mat-icon>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="field-span-2">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" placeholder="Last name">
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <p class="section-label field-span-2">Contact Details</p>
+
+      <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" placeholder="Email">
         <mat-icon matSuffix>email</mat-icon>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="field-span-2">
+
+      <mat-form-field appearance="outline">
         <mat-label>Phone</mat-label>
         <input matInput formControlName="phone" placeholder="Phone number">
         <mat-icon matSuffix>phone</mat-icon>
       </mat-form-field>
+
+      <p class="section-label field-span-2">Department</p>
+
       <mat-form-field appearance="outline" class="field-span-2">
         <mat-label>Department</mat-label>
         <mat-select formControlName="department">
@@ -26,10 +42,17 @@
       </mat-form-field>
 
       <div class="form-actions-full">
-        <button mat-raised-button color="primary" (click)="onSubmit()">
-            Update
-        </button>
+        
+        @if (isUpdateMode()) {
+          <button mat-raised-button color="primary" (click)="onSubmit()">
+              Update
+          </button>
+        }
+        @else {
+          <button mat-raised-button color="primary" (click)="onSubmit()">
+              Add Teacher
+          </button>
+        }
       </div>
-
   </form>
 </div>

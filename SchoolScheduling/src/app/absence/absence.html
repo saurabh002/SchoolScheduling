@@ -8,14 +8,14 @@
         <div class="search-wrap">
           <input type="text" id="teacher" placeholder="Search Teacher"
                  [ngModel]="teacherSearch()"
-                 (ngModelChange)="teacherSearch.set($event)" />
+                 (ngModelChange)="teacherSearch.set($event); selectedTeacher.set(null)" />
           @if (filteredTeachers().length > 0) {
             <ul class="suggestions">
               @for (teacher of filteredTeachers(); track teacher.id) {
                 <li (click)="selectTeacher(teacher)">{{ teacher.name }}</li>
               }
             </ul>
-          } @else if (teacherSearch().trim() !== '') {
+          } @else if (teacherSearch().trim() !== '' && !selectedTeacher()) {
             <p>No teachers found.</p>
           }
         </div>

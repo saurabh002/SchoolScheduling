@@ -1,80 +1,132 @@
-<!-- <div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1>Substitutions</h1>
-    <div class="date-badge">15/09/2025</div>
+<div class="substitution-page">
+
+  <div class="toolbar">
+    <h2 class="page-title">Substitution Management</h2>
+    <input type="date"
+           [value]="selectedDate()"
+           (change)="selectedDate.set($any($event.target).value)" />
   </div>
 
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <span class="metric-title">Unassigned</span>
-      <span class="metric-value text-red">3</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-title">Assigned</span>
-      <span class="metric-value text-green">2</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-title">Absent teachers</span>
-      <span class="metric-value text-white">2</span>
-    </div>
+  @if (errorMessage()) {
+    <p class="error-msg">{{ errorMessage() }}</p>
+  }
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button [class.active]="activeTab() === 'pending'"
+            (click)="activeTab.set('pending')">
+      Pending <span class="badge">{{ pendingCount() }}</span>
+    </button>
+    <button [class.active]="activeTab() === 'assigned'"
+            (click)="activeTab.set('assigned')">
+      Assigned <span class="badge">{{ assignedCount() }}</span>
+    </button>
   </div>
 
-  <div class="table-container">
-    <table class="sub-table">
-      <thead>
-        <tr>
-          <th>ABSENT TEACHER</th>
-          <th>PERIOD</th>
-          <th>TIME</th>
-          <th>CLASS</th>
-          <th>SUBJECT</th>
-          <th>SUBSTITUTE (SORTED BY LOAD · LOWEST FIRST)</th>
-          <th class="text-right">ACTION</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of substitutions" [class.row-assigned]="row.isAssigned">
-          <td>
-            <div class="teacher-cell">
-              <div class="avatar" [style.background-color]="row.avatarBg">
-                {{ row.initials }}
-              </div>
-              <div class="teacher-info">
-                <span class="teacher-name">{{ row.teacherName }}</span>
-                <span class="teacher-dept">{{ row.department }}</span>
-              </div>
-            </div>
-          </td>
-          
-          <td class="font-bold">{{ row.period }}</td>
-          <td class="text-muted">{{ row.time }}</td>
-          <td class="font-bold">{{ row.className }}</td>
-          <td class="font-medium">{{ row.subject }}</td>
-          
-          <td>
-            <div class="select-wrapper">
-              <select 
-                [(ngModel)]="row.selectedSubstituteId" 
-                class="custom-select"
-                [disabled]="row.isAssigned">
-                <option [ngValue]="null">— select —</option>
-                <option *ngFor="let sub of row.availableSubstitutes" [ngValue]="sub.id">
-                  {{ sub.name }} — R:{{ sub.loadScore }}
-                </option>
-              </select>
-              <span class="select-subtitle">R = regular · S = subs taken · M = missed</span>
-            </div>
-          </td>
-          
-          <td class="text-right">
-            <button 
-              [class]="row.isAssigned ? 'btn-change' : 'btn-assign'" 
-              (click)="toggleAssignment(row)">
-              {{ row.isAssigned ? 'Change' : 'Assign' }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div> -->
+  <!-- Pending Tab -->
+  @if (activeTab() === 'pending') {
+    @if (pending.isLoading()) {
+      <p class="loading">Loading...</p>
+    } @else if (pendingCount() === 0) {
+      <p class="empty">No pending substitutions for this date.</p>
+    } @else {
+      <div class="card">
+        <table class="sub-table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Time</th>
+              <th>Class</th>
+              <th>Subject</th>
+              <th>Absent Teacher</th>
+              <th>Department</th>
+              <th>Substitute</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of pending.value(); track row.absencePeriodId) {
+              <tr>
+                <td>{{ row.periodNumber }}</td>
+                <td class="time-col">{{ row.startTime }} - {{ row.endTime }}</td>
+                <td>{{ row.classSectionName }}</td>
+                <td>{{ row.subject }}</td>
+                <td>{{ row.absentTeacherName }}</td>
+                <td>{{ row.absentTeacherDepartment }}</td>
+                <td>
+                  <!-- <select [ngModel]="selectedSubstitutes()[row.absencePeriodId]"
+                          (ngModelChange)="selectSubstitute(row.absencePeriodId, $event)">
+                    <option value="">-- Select Substitute --</option>
+                    @for (sub of row.availableSubstitutes; track sub.teacherId) {
+                      <option [ngValue]="sub.teacherId">
+                        {{ sub.name }} | Regular Load: {{ sub.regularLoad }} | Subs: {{ sub.subsTaken }} | Missed: {{ sub.missedClasses }} | Effective Load: {{ sub.effectiveLoad }}
+                      </option>
+                    }
+                  </select> -->
+                  <app-substitute-dropdown
+                    [substitutes]="row.availableSubstitutes"
+                    [selected]="selectedSubstitutes()[row.absencePeriodId]"
+                    (substituteSelected)="selectSubstitute(row.absencePeriodId, $event)">
+                  </app-substitute-dropdown>
+
+                </td>
+                <td>
+                  <button
+                    [disabled]="!selectedSubstitutes()[row.absencePeriodId] || assigning() === row.absencePeriodId"
+                    (click)="assign(row.absencePeriodId)">
+                    {{ assigning() === row.absencePeriodId ? 'Assigning...' : 'Assign' }}
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  <!-- Assigned Tab -->
+  @if (activeTab() === 'assigned') {
+    @if (assigned.isLoading()) {
+      <p class="loading">Loading...</p>
+    } @else if (assignedCount() === 0) {
+      <p class="empty">No substitutions assigned yet for this date.</p>
+    } @else {
+      <div class="card">
+        <table class="sub-table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Time</th>
+              <th>Class</th>
+              <th>Subject</th>
+              <th>Absent Teacher</th>
+              <th>Substitute</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of assigned.value(); track row.absencePeriodId) {
+              <tr>
+                <td>{{ row.periodNumber }}</td>
+                <td class="time-col">{{ row.startTime }} - {{ row.endTime }}</td>
+                <td>{{ row.classSectionName }}</td>
+                <td>{{ row.subject }}</td>
+                <td>{{ row.absentTeacherName }}</td>
+                <td>{{ row.substituteTeacherName }}</td>
+                <td>
+                  <button
+                    [disabled]="unassigning() === row.absencePeriodId"
+                    (click)="unassign(row.absencePeriodId)">
+                    {{ unassigning() === row.absencePeriodId ? 'Cancelling...' : 'Cancel' }}
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+</div>

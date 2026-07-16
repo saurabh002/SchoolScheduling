@@ -3,7 +3,7 @@ import { TeacherService } from '../services/teacher.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TeacherModel } from '../model/teacherModel';
 import { TimetableService } from '../services/time-table.service';
-import { switchMap, map } from 'rxjs';
+import { map } from 'rxjs';
 import { TimetableEntryDto } from '../model/time-table.model';
 import { AbsenceService } from '../services/absence.service';
 import { CreateAbsenceDto, ExistingAbsenceDto } from '../model/absence.model';
@@ -44,13 +44,13 @@ export class Absence {
   errorMessage = signal<string | null>(null);
   existingAbsence = signal<ExistingAbsenceDto | null>(null);
 
-  teachersResource = rxResource({
+  teachersResource = rxResource<TeacherModel[], void>({
     stream: () => this.teacherService.getTeachers()
   });
 
   filteredTeachers = computed(() => {
     const search = this.teacherSearch().toLowerCase().trim();
-    if (!search) return [];
+    if (!search || this.selectedTeacher()) return [];
     return (this.teachersResource.value() ?? [])
       .filter(t => t.name.toLowerCase().includes(search));
   });
@@ -160,6 +160,7 @@ export class Absence {
     const teacher = this.selectedTeacher();
     const date = this.selectedDate();
     const checked = this.checkedPeriods();
+    const existing = this.existingAbsence();
 
     if (!teacher || !date) return;
     if (checked.length === 0) {
@@ -178,8 +179,24 @@ export class Absence {
       }))
     };
 
+    if (existing) {
+      this.absenceService.addPeriodsToAbsence(existing.id, payload.affectedPeriods).subscribe({
+        next: () => this.checkExistingAbsence(teacher.id, date),
+        error: (err) => {
+          if (err.status === 409) {
+            this.errorMessage.set(err.error?.message ?? 'Conflicting periods found.');
+          } else {
+            this.errorMessage.set('Failed to update absence. Please try again.');
+          }
+        }
+      });
+      return;
+    }
+
     this.absenceService.createAbsence(payload).subscribe({
-      next: () => this.router.navigate(['/substitutions']),
+      next: () => {
+        this.checkExistingAbsence(teacher.id, date);
+      },
       error: (err) => {
         if (err.status === 409) {
           this.errorMessage.set(err.error?.message ?? 'Teacher already marked absent on this date.');

@@ -1,266 +1,226 @@
-/* ==========================================================================
-   Dashboard Design Variables 
-   ========================================================================== */
-:root {
-  --bg-main: #111111;
-  --bg-card: #181818;
-  --bg-input: #222222;
-  --border-color: #2a2a2a;
-  --text-main: #ffffff;
-  --text-muted: #888888;
-  --accent-blue: #2196f3;
-  --accent-blue-hover: rgba(33, 150, 243, 0.2);
-  --accent-blue-text: #90caf9;
-  --accent-red: #ff4d4d;
-  --accent-green: #4caf50;
-  --row-assigned-tint: rgba(76, 175, 80, 0.06);
+/* substitution-page.component.css */
+
+.substitution-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* ==========================================================================
-   Layout Containers
-   ========================================================================== */
-.dashboard-container {
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  min-height: 100vh;
-  padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-.dashboard-header {
+/* Toolbar */
+.toolbar {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
-.dashboard-header h1 {
-  font-size: 1.75rem;
+.page-title {
+  font-size: 1.5rem;
   font-weight: 600;
+  color: #1e293b;
   margin: 0;
 }
 
-.dashboard-header .date-badge {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  padding: 0.5rem 1rem;
+.toolbar input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
+  color: #334155;
+  outline: none;
+  cursor: pointer;
 }
 
-/* ==========================================================================
-   KPI Summary Metrics Grid
-   ========================================================================== */
-.metrics-grid {
+.toolbar input[type="date"]:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Error */
+.error-msg {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+}
+
+/* Tabs */
+.tabs {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  gap: 4px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 24px;
 }
 
-.metric-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.25rem;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.metric-card .metric-title {
-  color: var(--text-muted);
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background: none;
   font-size: 0.9rem;
   font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.metric-card .metric-value {
-  font-size: 2rem;
-  font-weight: 700;
+.tabs button:hover {
+  color: #6366f1;
+  background: #f8fafc;
 }
 
-/* ==========================================================================
-   The Subscriptions Roster Table
-   ========================================================================== */
-.table-container {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
+.tabs button.active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+  font-weight: 600;
+}
+
+/* Badge */
+.badge {
+  background: #e0e7ff;
+  color: #4338ca;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.tabs button.active .badge {
+  background: #6366f1;
+  color: #fff;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
+/* Table */
 .sub-table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  font-size: 0.875rem;
 }
 
 .sub-table thead {
-  background-color: rgba(0, 0, 0, 0.2);
+  background: #f8fafc;
 }
 
 .sub-table th {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.sub-table tbody tr {
-  border-bottom: 1px solid var(--border-color);
-  /* Smooth color morphing transition when state updates */
-  transition: background-color 0.25s ease;
-}
-
-.sub-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.sub-table td {
-  padding: 1.25rem 1.5rem;
-  vertical-align: middle;
-  font-size: 0.95rem;
-}
-
-/* ==========================================================================
-   Dynamic Row Toggling State Styles (Your Idea!)
-   ========================================================================== */
-.sub-table tbody tr.row-assigned {
-  background-color: var(--row-assigned-tint);
-}
-
-.sub-table tbody tr.row-assigned td {
-  border-color: rgba(76, 175, 80, 0.15);
-}
-
-.sub-table tbody tr.row-assigned .custom-select {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* ==========================================================================
-   Teacher Component Elements
-   ========================================================================== */
-.teacher-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.teacher-cell .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 0.85rem;
-  color: #ffffff;
-}
-
-.teacher-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.teacher-info .teacher-name {
+  padding: 12px 16px;
+  text-align: left;
   font-weight: 600;
-  color: var(--text-main);
-}
-
-.teacher-info .teacher-dept {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* ==========================================================================
-   Custom Native Selection Fields
-   ========================================================================== */
-.select-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  max-width: 240px;
-}
-
-.custom-select {
-  background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 0.6rem 2rem 0.6rem 1rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  
-  /* Render custom vector dropdown chevron arrows */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 1rem;
-}
-
-.custom-select:focus {
-  outline: none;
-  border-color: var(--accent-blue);
-}
-
-.select-wrapper .select-subtitle {
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
   white-space: nowrap;
 }
 
-/* ==========================================================================
-   Action Control Buttons
-   ========================================================================== */
-.btn-assign {
-  background: none;
-  border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.03);
-  color: var(--text-main);
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
+.sub-table td {
+  padding: 12px 16px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.sub-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sub-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.time-col {
+  white-space: nowrap;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+/* Select dropdown */
+.sub-table select {
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #334155;
+  background: #fff;
+  outline: none;
+  min-width: 280px;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
-.btn-assign:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: var(--text-muted);
+.sub-table select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.btn-change {
-  background: none;
-  border: 1px solid rgba(33, 150, 243, 0.4);
-  background-color: rgba(33, 150, 243, 0.1);
-  color: var(--accent-blue-text);
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
+/* Buttons */
+.sub-table button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, opacity 0.2s;
+  white-space: nowrap;
 }
 
-.btn-change:hover {
-  background-color: var(--accent-blue-hover);
-  color: var(--text-main);
+/* Assign button */
+.sub-table tbody tr:nth-child(n) td:last-child button:not(.btn-cancel) {
+  background: #6366f1;
+  color: #fff;
+  border: none;
 }
 
-/* ==========================================================================
-   Typography Utility Layout Helpers
-   ========================================================================== */
-.text-red { color: var(--accent-red); }
-.text-green { color: var(--accent-green); }
-.text-white { color: var(--text-main); }
-.text-muted { color: var(--text-muted); }
-.text-right { text-align: right; }
-.font-bold { font-weight: 700; }
-.font-medium { font-weight: 500; }
+.sub-table tbody tr:nth-child(n) td:last-child button:not(.btn-cancel):hover:not(:disabled) {
+  background: #4f46e5;
+}
+
+/* Cancel button */
+.btn-cancel {
+  background: #fff;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #fef2f2;
+  border-color: #dc2626;
+}
+
+/* Disabled state */
+.sub-table button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Empty / Loading */
+.empty,
+.loading {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  padding: 48px 0;
+}
+
+.card {
+  overflow: visible; /* was hidden */
+}
+
+.sub-table {
+  overflow: visible;
+}

@@ -3,7 +3,6 @@ import { App } from './app';
 import { Teacher } from './teacher/teacher';
 
 export const routes: Routes = [
-    {path:'', component: App},
     {path:'teacher', component: Teacher},
     {path:'teacher/:id', component: Teacher},
     {path:'timetable', loadComponent: () => import('./time-table/time-table').then(m => m.TimeTable)},
@@ -17,5 +16,10 @@ export const routes: Routes = [
         path: 'substitutions',
         loadComponent: () => import('./substitutions/substitutions')
         .then(m => m.Substitutions)
+    },
+    {
+        path: 'report',
+        loadComponent: () => import('./report/report')
+        .then(m => m.Report)
     }
 ];

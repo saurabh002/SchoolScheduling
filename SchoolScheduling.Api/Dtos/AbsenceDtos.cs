@@ -11,6 +11,10 @@ public record CreateAbsenceDto(
     List<CreateAbsencePeriodDto> AffectedPeriods
 );
 
+public record AddAbsencePeriodsDto(
+    List<CreateAbsencePeriodDto> AffectedPeriods
+);
+
 public record AssignSubstituteDto(
     int SubstituteTeacherId
 );
@@ -21,7 +25,8 @@ public record AvailableSubstituteDto(
     int RegularLoad,
     int SubsTaken,
     int MissedClasses,
-    int EffectiveLoad
+    int EffectiveLoad,
+    int FreePeriodsToday
 );
 
 public record PendingSubstitutionDto(
@@ -50,4 +55,19 @@ public record AssignedSubstitutionDto(
     string ClassSectionName,
     string? Subject
 );
+
+public record ExistingAbsenceDto(int Id, List<AbsencePeriodDto> Periods);
+public record AbsencePeriodDto(int Id, int TimetableEntryId, bool HasSubstitute);
+
+public record AbsencePeriodRaw(
+        DateOnly Date,
+        string AbsentTeacher,
+        string Class,
+        int PeriodNumber,
+        int StartTimeHour,
+        int StartTimeMinute,
+        int EndTimeHour,
+        int EndTimeMinute,
+        string Substitute
+    );
 }

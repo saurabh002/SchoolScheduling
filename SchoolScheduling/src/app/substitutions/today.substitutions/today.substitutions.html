@@ -1,0 +1,28 @@
+@if (substitutionsResource.isLoading()) {
+  <p class="status">Loading substitutions…</p>
+} @else if (substitutionsResource.value(); as subs) {
+  @if (subs.length > 0) {
+    <div class="subs-section">
+      <h3 class="subs-title">
+        <span class="subs-badge">Today's Substitutions</span>
+      </h3>
+      <div class="subs-list">
+        @for (sub of subs; track sub.periodNumber) {
+          <div class="sub-card">
+            <div class="sub-period">
+              <span class="period-num">Period {{ sub.periodNumber }}</span>
+              <span class="period-time">{{ sub.startTime }} – {{ sub.endTime }}</span>
+            </div>
+            <div class="sub-details">
+              <span class="sub-class">{{ sub.className }}</span>
+              <span class="sub-subject">{{ sub.subject }}</span>
+            </div>
+            <div class="sub-absent">
+              Covering for <strong>{{ sub.absentTeacherName }}</strong>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+}

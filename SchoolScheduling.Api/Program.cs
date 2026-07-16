@@ -31,4 +31,7 @@ app.MapControllers();
 app.MapTeacherEndpoints();
 app.MapTimeTableEndpoints();
 app.MapAbsenceEndpoints();
+app.MapReportEndpoints();
+app.MapReportExportEndpoint();
+
 app.Run();

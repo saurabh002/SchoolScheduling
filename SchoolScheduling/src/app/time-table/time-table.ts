@@ -4,6 +4,7 @@ import { TeacherModel } from '../model/teacherModel';
 import { TeacherService } from '../services/teacher.service';
 import { TimetableService } from '../services/time-table.service';
 import { Router } from '@angular/router';
+import { TodaySubstitutions } from '../substitutions/today.substitutions/today.substitutions';
 
 interface Assignment {
   entryId: number;
@@ -13,7 +14,7 @@ interface Assignment {
 }
 @Component({
   selector: 'app-time-table',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, TodaySubstitutions],
   templateUrl: './time-table.html',
   styleUrl: './time-table.css',
 })
@@ -53,6 +54,7 @@ export class TimeTable {
         console.log('Loading timetable for teacher:', id);
         this.teacherService.getTeacher(id).subscribe(teacher => {
           this.teacherSearch.set(teacher.name);
+          this.isSelected.set(true);
           console.log('Teacher found:', teacher);
         });
       
@@ -60,6 +62,7 @@ export class TimeTable {
       }
       else {
         this.assignments.set(new Map());
+        this.isSelected.set(false);
       }
     });
   }
@@ -78,9 +81,9 @@ export class TimeTable {
   }
 
   selectTeacher(teacher: TeacherModel){
-    this.router.navigate(['/timetable'], { queryParams: { teacherId: teacher.id } });  
-    this.teacherSearch.set('');
+    this.teacherSearch.set(teacher.name);
     this.isSelected.set(true);
+    this.router.navigate(['/timetable'], { queryParams: { teacherId: teacher.id } });  
   }
 
   private loadTeacherTimetable(teacherId: number) {
@@ -163,4 +166,10 @@ export class TimeTable {
     console.log(c);
     return c?.day === day && c?.period === period;
   }
+
+  viewTeacherProfile(teacherId: number | null) {
+    if (teacherId) {
+      this.router.navigate(['/teacher', teacherId]);
+    }
+  }  
 }

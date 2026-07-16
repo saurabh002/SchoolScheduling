@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SchoolScheduling.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a6f1f650c6e4a96b48be01c53191a39b02b5b99")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9ab10b22a55daf4a02d369ebc16a094a6a308a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("SchoolScheduling.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SchoolScheduling.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

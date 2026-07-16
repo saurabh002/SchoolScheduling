@@ -1,0 +1,156 @@
+<!-- <div class="reports-page">
+  <h1>Reports &amp; Summary</h1>
+
+  @if (summaryResource.isLoading()) {
+    <p class="status">Loading summary…</p>
+  } @else if (summaryResource.error()) {
+    <p class="status status-error">Failed to load report data.</p>
+  } @else if (summaryResource.value(); as summary) {
+
+    <section class="stat-cards">
+      <div class="stat-card">
+        <span class="stat-value">{{ summary.totalTeachers }}</span>
+        <span class="stat-label">Total Teachers</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ summary.absencesToday }}</span>
+        <span class="stat-label">Absences Today</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ summary.absencesThisWeek }}</span>
+        <span class="stat-label">Absences This Week</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ coverageRate() }}%</span>
+        <span class="stat-label">Coverage Today ({{ summary.periodsAssignedToday }}/{{ summary.periodsAssignedToday + summary.periodsPendingToday }})</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Absence Trend (Last 7 Days)</h2>
+      <div class="trend-chart">
+        @for (point of summary.absenceTrend; track point.date) {
+          <div class="trend-bar-wrap">
+            <div class="trend-bar" [style.height.%]="barHeightPct(point.count)">
+              <span class="trend-count">{{ point.count }}</span>
+            </div>
+            <span class="trend-date">{{ point.date | date: 'EEE' }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Top Substitutes by Workload</h2>
+      <table class="workload-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Regular Load</th>
+            <th>Subs Taken</th>
+            <th>Missed</th>
+            <th>Effective Load</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (sub of summary.topSubstitutes; track sub.teacherId) {
+            <tr>
+              <td>{{ sub.name }}</td>
+              <td>{{ sub.regularLoad }}</td>
+              <td>{{ sub.subsTaken }}</td>
+              <td>{{ sub.missedClasses }}</td>
+              <td>
+                <span class="badge" [class]="workloadBadgeClass(sub.effectiveLoad)">
+                  {{ sub.effectiveLoad }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="empty-row">No data available.</td></tr>
+          }
+        </tbody>
+      </table>
+    </section>
+
+  }
+</div> -->
+<div class="reports-page">
+  <h1>Reports &amp; Summary</h1>
+
+  @if (summaryResource.isLoading()) {
+    <p class="status">Loading summary…</p>
+  } @else if (summaryResource.error()) {
+    <p class="status-error">Failed to load report data.</p>
+  } @else if (summaryResource.value(); as summary) {
+
+    <!-- Stat cards -->
+    <section class="stat-cards">
+      <div class="stat-card">
+        <span class="stat-value">{{ summary.totalTeachers }}</span>
+        <span class="stat-label">Total Teachers</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ summary.absencesToday }}</span>
+        <span class="stat-label">Absences Today</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ summary.absencesThisWeek }}</span>
+        <span class="stat-label">Absences This Week</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ coverageRate() }}%</span>
+        <span class="stat-label">
+          Coverage Today
+          ({{ summary.periodsAssignedToday }}/{{ summary.periodsAssignedToday + summary.periodsPendingToday }})
+        </span>
+      </div>
+    </section>
+
+    <!-- Trend + Coverage -->
+    <div class="chart-row">
+      <div class="panel">
+        <h2>Absence Trend (Last 7 Days)</h2>
+        <canvas #trendCanvas></canvas>
+      </div>
+      <div class="panel panel-small">
+        <h2>Today's Coverage</h2>
+        <canvas #coverageCanvas></canvas>
+      </div>
+    </div>
+
+    <!-- Effective Workload with period navigator -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Effective Workload (Top 5)</h2>
+            <div class="controls">
+
+                <button 
+                class="export-btn" 
+                (click)="exportReport()" 
+                [disabled]="exporting()"
+                title="Export {{ summary.periodLabel }} as Excel">
+                {{ exporting() ? 'Exporting…' : 'Export Excel' }}
+                </button>
+
+                <div class="tab-toggle">
+                <button class="tab-btn" [class.active]="periodType() === 'week'" (click)="setPeriodType('week')">Weekly</button>
+                <button class="tab-btn" [class.active]="periodType() === 'month'" (click)="setPeriodType('month')">Monthly</button>
+                </div>
+
+                <div class="navigator">
+                <button class="nav-btn" (click)="goBack()">&#8592;</button>
+                <span class="period-label">{{ summary.periodLabel }}</span>
+                <button class="nav-btn" (click)="goForward()" [disabled]="offset() === 1">&#8594;</button>
+                </div>
+
+            </div>
+        </div>
+
+        @if (exportError()) {
+        <p class="status-error">{{ exportError() }}</p>
+        }
+      <canvas #workloadCanvas></canvas>
+    </div>
+
+  }
+</div>

@@ -8,6 +8,7 @@ export interface TeacherModel {
 }
 
 export interface CreateTeacherDto {
+  id?: number;
   name: string;
   department?: string | null;
   email?: string | null;

@@ -45,7 +45,16 @@ namespace SchoolScheduling.Endpoints{
                 Phone = dto.Phone
             };
 
-            db.Teachers.Add(teacher);
+            if(dto.Id != 0 )
+            {
+                teacher.Id = dto.Id;
+                db.Teachers.Update(teacher);
+            }
+            else
+            {
+                db.Teachers.Add(teacher);
+            }
+
             await db.SaveChangesAsync();
 
             var result = new TeacherDto(teacher.Id, teacher.Name, teacher.Department, teacher.Email, teacher.Phone, teacher.IsActive);

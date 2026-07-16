@@ -72,3 +72,11 @@
 /Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/SchoolScheduling.Api.genruntimeconfig.cache
 /Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/ref/SchoolScheduling.Api.dll
 /Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/Debug/net10.0/SchoolScheduling.Api.sourcelink.json
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/ClosedXML.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/ClosedXML.Parser.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/DocumentFormat.OpenXml.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/DocumentFormat.OpenXml.Framework.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/ExcelNumberFormat.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/RBush.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/SixLabors.Fonts.dll
+/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/bin/Debug/net10.0/System.IO.Packaging.dll

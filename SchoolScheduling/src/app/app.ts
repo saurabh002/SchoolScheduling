@@ -1,23 +1,23 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { RouterOutlet } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ReactiveFormsModule, MatFormFieldModule,MatInputModule,
-    MatSelectModule,MatIconModule],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('SchoolScheduling');
-  fb = inject(FormBuilder);
-  profileForm = this.fb.group({
-    fullName: [''],
-    department: ['']
-  })
+  private router = inject(Router);
+
+  protected readonly title = signal('School Scheduling');
+  protected readonly currentUrl = signal(this.router.url);
+  protected readonly isHomePage = computed(() => this.currentUrl() === '/' || this.currentUrl() === '');
+
+  constructor() {
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe(event => this.currentUrl.set(event.urlAfterRedirects));
+  }
 }

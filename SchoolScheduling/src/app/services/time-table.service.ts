@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { CreateTimetableEntryDto, TimetableEntryDto, UpdateTimetableEntryDto } from "../model/time-table.model";
 import { Observable } from "rxjs";
+import { TodaySubstitutionDto } from "../model/absence.model";
 
 @Injectable({ providedIn: 'root' })
 export class TimetableService {
@@ -22,5 +23,9 @@ export class TimetableService {
 
   deleteEntry(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/timetable/${id}`);
+  }
+
+  todaySubstitutions(teacherId: number): Observable<TodaySubstitutionDto[]> {
+    return this.http.get<TodaySubstitutionDto[]>(`${this.baseUrl}/api/substitutes/today/${teacherId}`);
   }
 }

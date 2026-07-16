@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import {
   AssignedSubstitutionDto,
   CreateAbsenceDto,
+  CreateAbsencePeriodDto,
   ExistingAbsenceDto,
   PendingSubstitutionDto,
 } from "../model/absence.model";
@@ -15,6 +16,13 @@ export class AbsenceService {
 
   createAbsence(payload: CreateAbsenceDto): Observable<{ id: number }> {
     return this.http.post<{ id: number }>(`${this.baseUrl}/api/absences`, payload);
+  }
+
+  addPeriodsToAbsence(absenceId: number, affectedPeriods: CreateAbsencePeriodDto[]): Observable<{ id: number; addedCount: number }> {
+    return this.http.post<{ id: number; addedCount: number }>(
+      `${this.baseUrl}/api/absences/absences/${absenceId}/periods`,
+      { affectedPeriods }
+    );
   }
 
   getPendingSubstitutions(date: string): Observable<PendingSubstitutionDto[]> {
@@ -31,22 +39,29 @@ export class AbsenceService {
     );
   }
 
-  assignSubstitute(absencePeriodId: number, substituteTeacherId: number): Observable<{ id: number; teacherId: number; substituteTeacherId: number }> {
-    return this.http.post<{ id: number; teacherId: number; substituteTeacherId: number }>(
-      `${this.baseUrl}/api/substitutes/assign`,
-      { absencePeriodId, substituteTeacherId }
+  assignSubstitute(absencePeriodId: number, substituteTeacherId: number) {
+    return this.http.put<{ id: number; substituteTeacherId: number }>(
+      `${this.baseUrl}/api/absence-periods/${absencePeriodId}/assign`,
+      { substituteTeacherId }
     );
   }
 
-  getExistingAbsence(teacherId: number, date: string) {
-    return this.http.get<ExistingAbsenceDto>(`/api/absences?teacherId=${teacherId}&date=${date}`);
+  getExistingAbsence(teacherId: number, date: string): Observable<ExistingAbsenceDto> {
+    return this.http.get<ExistingAbsenceDto>(
+      `${this.baseUrl}/api/absences/absences`,
+      { params: { teacherId, date } }
+    );
   }
 
-  deleteAbsencePeriod(absencePeriodId: number) {
-    return this.http.delete(`/api/absences/periods/${absencePeriodId}`);
+  deleteAbsencePeriod(absencePeriodId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/absences/absence-periods/${absencePeriodId}`);
   }
 
-  deleteAbsence(absenceId: number) {
-    return this.http.delete(`/api/absences/${absenceId}`);
+  deleteAbsence(absenceId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/absences/absences/${absenceId}`);
+  }
+
+  unassign(absencePeriodId: number) {
+    return this.http.delete(`${this.baseUrl}/api/substitutes/${absencePeriodId}/assign`);
   }
 }

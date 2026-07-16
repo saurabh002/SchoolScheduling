@@ -10,12 +10,13 @@ export interface CreateAbsenceDto {
 }
 
 export interface AvailableSubstituteDto {
-  id: number;
+  teacherId: number;
   name: string;
-  totalClasses: number;
-  substitutionCount: number;
-  absenceCount: number;
+  regularLoad: number;
+  subsTaken: number;
+  missedClasses: number;
   effectiveLoad: number;
+  freePeriodsToday: number;
 }
 
 export interface PendingSubstitutionDto {
@@ -54,4 +55,13 @@ export interface AbsencePeriodDto {
 export interface ExistingAbsenceDto {
   id: number;
   periods: AbsencePeriodDto[];
+}
+
+export interface TodaySubstitutionDto {
+  periodNumber: number;
+  startTime: string;
+  endTime: string;
+  className: string;
+  subject: string;
+  absentTeacherName: string;
 }

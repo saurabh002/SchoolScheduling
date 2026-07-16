@@ -1,33 +1,63 @@
-<!-- <div class="form-page-container">
-  <form [formGroup]="profileForm" class="grid-form">
-      <h2 class="form-heading">Profile Information</h2>
+<header class="top-nav">
+  <a class="brand" routerLink="/">
+    <span class="brand-mark">SS</span>
+    <span class="brand-text">{{ title() }}</span>
+  </a>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Full Name</mat-label>
-        <input matInput formControlName="fullName" placeholder="John Doe">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
+  <nav class="nav-links" aria-label="Primary navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a routerLink="/teacher" routerLinkActive="active">Add Teacher</a>
+    <a routerLink="/timetable" routerLinkActive="active">View Timetable</a>
+    <a routerLink="/absence" routerLinkActive="active">Mark Absence</a>
+    <a routerLink="/substitutions" routerLinkActive="active">Manage Substitution</a>
+    <a routerLink="/report" routerLinkActive="active">Reports</a>
+  </nav>
+</header>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Department</mat-label>
-        <mat-select formControlName="department">
-          <mat-option value="dev">Development</mat-option>
-          <mat-option value="design">Design</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Full Name</mat-label>
-        <input matInput formControlName="fullName" placeholder="John Doe">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
+@if (isHomePage()) {
+  <main class="home-page">
+    <section class="hero-panel">
+      <p class="eyebrow">School Operations Hub</p>
+      <h1>{{ title() }}</h1>
+      <p class="hero-copy">
+        Manage your staff directory, review class plans, record absences, and coordinate substitutions from one place.
+      </p>
+    </section>
 
-      <mat-form-field appearance="outline" class="field-span-2">
-        <mat-label>Department</mat-label>
-        <mat-select formControlName="department">
-          <mat-option value="dev">Development</mat-option>
-          <mat-option value="design">Design</mat-option>
-        </mat-select>
-      </mat-form-field> 
-  </form>
-</div>-->
-<router-outlet></router-outlet>
+    <section class="actions-grid" aria-label="Primary actions">
+      <a class="action-card action-teacher" routerLink="/teacher">
+        <span class="action-index">01</span>
+        <h2>Add Teacher</h2>
+        <p>Create a new teacher profile and maintain staffing details.</p>
+      </a>
+
+      <a class="action-card action-timetable" routerLink="/timetable">
+        <span class="action-index">02</span>
+        <h2>View Timetable</h2>
+        <p>Open the weekly teaching schedule and review each assigned period.</p>
+      </a>
+
+      <a class="action-card action-absence" routerLink="/absence">
+        <span class="action-index">03</span>
+        <h2>Mark Absence</h2>
+        <p>Record teacher absences for a date and select the affected periods.</p>
+      </a>
+
+      <a class="action-card action-substitution" routerLink="/substitutions">
+        <span class="action-index">04</span>
+        <h2>Manage Substitution</h2>
+        <p>Review pending coverage and confirm assigned substitutes quickly.</p>
+      </a>
+
+      <a class="action-card action-report" routerLink="/report">
+        <span class="action-index">05</span>
+        <h2>View Reports</h2>
+        <p>Open visual summaries for absences, coverage load, and scheduling trends.</p>
+      </a>
+    </section>
+  </main>
+} @else {
+  <div class="page-body">
+    <router-outlet></router-outlet>
+  </div>
+}
