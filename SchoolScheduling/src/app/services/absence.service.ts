@@ -8,11 +8,12 @@ import {
   ExistingAbsenceDto,
   PendingSubstitutionDto,
 } from "../model/absence.model";
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AbsenceService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:5179';
+  private baseUrl = environment.apiUrl;
 
   createAbsence(payload: CreateAbsenceDto): Observable<{ id: number }> {
     return this.http.post<{ id: number }>(`${this.baseUrl}/api/absences`, payload);

@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PeriodType, ReportSummary } from '../model/report.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
   private readonly http = inject(HttpClient);
-  private baseUrl = 'http://localhost:5179';
+  private baseUrl = environment.apiUrl;
 
   getSummary(periodType: PeriodType, offset: number): Observable<ReportSummary> {
     return this.http.get<ReportSummary>(`${this.baseUrl}/api/reports/summary`, {

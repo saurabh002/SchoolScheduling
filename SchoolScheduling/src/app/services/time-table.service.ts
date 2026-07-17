@@ -3,11 +3,12 @@ import { inject, Injectable } from "@angular/core";
 import { CreateTimetableEntryDto, TimetableEntryDto, UpdateTimetableEntryDto } from "../model/time-table.model";
 import { Observable } from "rxjs";
 import { TodaySubstitutionDto } from "../model/absence.model";
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TimetableService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:5179';
+  private baseUrl = environment.apiUrl;
 
   getTeacherTimetable(teacherId: number): Observable<TimetableEntryDto[]> {
     return this.http.get<TimetableEntryDto[]>(`${this.baseUrl}/api/teachers/${teacherId}/timetable`);
