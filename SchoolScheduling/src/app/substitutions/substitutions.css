@@ -224,3 +224,32 @@
 .sub-table {
   overflow: visible;
 }
+
+@media (max-width: 600px) {
+  .substitution-page {
+    padding: 12px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toolbar input[type="date"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .card {
+    overflow-x: auto;
+  }
+
+  .sub-table {
+    min-width: 600px;
+  }
+
+  .sub-table select {
+    min-width: 160px;
+  }
+}

@@ -39,7 +39,6 @@
               <th>Class</th>
               <th>Subject</th>
               <th>Absent Teacher</th>
-              <th>Department</th>
               <th>Substitute</th>
               <th></th>
             </tr>
@@ -52,7 +51,6 @@
                 <td>{{ row.classSectionName }}</td>
                 <td>{{ row.subject }}</td>
                 <td>{{ row.absentTeacherName }}</td>
-                <td>{{ row.absentTeacherDepartment }}</td>
                 <td>
                   <!-- <select [ngModel]="selectedSubstitutes()[row.absencePeriodId]"
                           (ngModelChange)="selectSubstitute(row.absencePeriodId, $event)">

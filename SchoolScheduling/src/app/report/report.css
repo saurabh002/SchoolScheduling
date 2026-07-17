@@ -318,3 +318,27 @@
   opacity: 0.6;
   cursor: default;
 }
+
+@media (max-width: 600px) {
+  .reports-page {
+    padding: 1rem;
+  }
+
+  .chart-row {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .period-label {
+    min-width: unset;
+  }
+}
