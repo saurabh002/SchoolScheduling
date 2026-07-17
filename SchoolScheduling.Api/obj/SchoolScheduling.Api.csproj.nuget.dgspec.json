@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/SchoolScheduling.Api.csproj": {}
+    "C:\\Users\\saura\\source\\SchoolScheduling\\SchoolScheduling.Api\\SchoolScheduling.Api.csproj": {}
   },
   "projects": {
-    "/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/SchoolScheduling.Api.csproj": {
+    "C:\\Users\\saura\\source\\SchoolScheduling\\SchoolScheduling.Api\\SchoolScheduling.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/SchoolScheduling.Api.csproj",
+        "projectUniqueName": "C:\\Users\\saura\\source\\SchoolScheduling\\SchoolScheduling.Api\\SchoolScheduling.Api.csproj",
         "projectName": "SchoolScheduling.Api",
-        "projectPath": "/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/SchoolScheduling.Api.csproj",
-        "packagesPath": "/Users/satvik/.nuget/packages/",
-        "outputPath": "/Users/satvik/Saurabh/Angular/1/SchoolScheduling/SchoolScheduling.Api/obj/",
+        "projectPath": "C:\\Users\\saura\\source\\SchoolScheduling\\SchoolScheduling.Api\\SchoolScheduling.Api.csproj",
+        "packagesPath": "C:\\Users\\saura\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\saura\\source\\SchoolScheduling\\SchoolScheduling.Api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/satvik/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\saura\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -82,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.301/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
