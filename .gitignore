@@ -1,1 +1,7 @@
-".vs/" 
+.vs/
+.DS_Store
+
+# .NET build artifacts
+**/bin/
+**/obj/
+**/publish/
