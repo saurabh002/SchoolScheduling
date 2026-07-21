@@ -25,11 +25,11 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-// var dbPath = Path.Combine("/home/data", "school.db");
-// Directory.CreateDirectory("/home/data");
+var dbPath = Path.Combine("/home/data", "school.db");
+Directory.CreateDirectory("/home/data");
 
-// builder.Services.AddDbContext<SchoolDbContext>(options =>
-//     options.UseSqlite($"Data Source={dbPath}"));
+builder.Services.AddDbContext<SchoolDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}"));
 
 app.UseCors();
 app.UseAuthorization();
