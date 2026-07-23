@@ -50,7 +50,7 @@ export class TimeTable {
 
     effect(() => {
       const id = this.teacherId();
-      if (id !== null) {
+      if (typeof id === 'number' && !Number.isNaN(id)) {
         console.log('Loading timetable for teacher:', id);
         this.teacherService.getTeacher(id).subscribe(teacher => {
           this.teacherSearch.set(teacher.name);

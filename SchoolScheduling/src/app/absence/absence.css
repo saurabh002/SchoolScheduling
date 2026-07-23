@@ -48,6 +48,23 @@
   position: relative;
 }
 
+.no-teachers-found {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 14px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #c0392b;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  z-index: 10;
+}
+
 .suggestions {
   position: absolute;
   top: 100%;
