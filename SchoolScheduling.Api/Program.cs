@@ -22,6 +22,17 @@ builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
+// 1. Configure CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowStaticWebApp", policy =>
+    {
+        policy.WithOrigins("https://thankful-sea-0e48ccc00.7.azurestaticapps.net")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build(); // <--- Build must happen AFTER registering services!
 
 // 3. Database initialization
@@ -31,7 +42,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-app.UseCors();
+app.UseCors("AllowStaticWebApp");
 app.UseAuthorization();
 app.MapControllers();
 app.MapTeacherEndpoints();
