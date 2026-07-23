@@ -1,35 +1,35 @@
-// Program.cs
 using Microsoft.EntityFrameworkCore;
 using SchoolScheduling;
 using SchoolScheduling.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connect the app to a local, relative SQLite file drawer
+// 1. Resolve persistent directory path BEFORE configuring services
+// In Azure App Service (Linux or Windows), D:\home or /home is persistent.
+var homeDir = Environment.GetEnvironmentVariable("HOME") ?? AppContext.BaseDirectory;
+var dataFolder = Path.Combine(homeDir, "data");
+Directory.CreateDirectory(dataFolder);
+
+var dbPath = Path.Combine(dataFolder, "school.db");
+
+// 2. Register DbContext ONCE with the correct path
 builder.Services.AddDbContext<SchoolDbContext>(options =>
-    options.UseSqlite("Data Source=school.db"));
+    options.UseSqlite($"Data Source={dbPath}"));
 
 builder.Services.AddControllers();
 
-// Enable local Cross-Origin Resource Sharing for modern Angular frontend requests
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-var app = builder.Build();
+var app = builder.Build(); // <--- Build must happen AFTER registering services!
 
-// Automatically scaffold and verify the .db file on application spin up
+// 3. Database initialization
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<SchoolDbContext>();
     db.Database.EnsureCreated();
 }
-
-var dbPath = Path.Combine("/home/data", "school.db");
-Directory.CreateDirectory("/home/data");
-
-builder.Services.AddDbContext<SchoolDbContext>(options =>
-    options.UseSqlite($"Data Source={dbPath}"));
 
 app.UseCors();
 app.UseAuthorization();
