@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowStaticWebApp", policy =>
     {
-        policy.WithOrigins("https://thankful-sea-0e48ccc00.7.azurestaticapps.net")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
