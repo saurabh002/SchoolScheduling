@@ -19,9 +19,9 @@ interface Assignment {
   styleUrl: './time-table.css',
 })
 export class TimeTable {
-  grades = ['1A', '1B', '2A', '2B', '3A', '3B', '4A', '4B', '5A', '5B'];
-  subjects = ['Maths', 'English', 'EVS', 'ICT', 'Hindi', 'Science', 'Social', 'Art', 'PE'];
-  periods = [1, 2, 3, 4, 5, 6, 7, 8];
+  grades = ['1A', '1B', '1C', '1D', '1E', '1F', '2A', '2B', '2C', '2D', '2E', '2F', '3A', '3B', '3C', '3D', '3E', '3F', '4A', '4B', '4C', '4D', '4E', '4F', '5A', '5B', '5C', '5D', '5E', '5F'];
+  subjects = ['Art', 'Dance', 'Drama', 'EVS', 'English', 'Hindi', 'ICT', 'Kannada', 'Maths', 'Music', 'Science', 'Social', 'Sports'];
+  periods = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   private dayOfWeekMap: Record<string, number> = {
     Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3,
