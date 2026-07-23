@@ -56,7 +56,6 @@ namespace SchoolScheduling
                 new Period { Id = 7, Number = 7, StartTime = new TimeOnly(12, 45), EndTime = new TimeOnly(13, 20) },
                 new Period { Id = 8, Number = 8, StartTime = new TimeOnly(13, 20), EndTime = new TimeOnly(13, 55) },
                 new Period { Id = 9, Number = 9, StartTime = new TimeOnly(13, 55), EndTime = new TimeOnly(14, 35) }
-
             );
 
             // in your DbContext OnModelCreating, or a seed script
