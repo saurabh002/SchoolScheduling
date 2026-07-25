@@ -108,10 +108,8 @@ export class TimeTable {
   }
 
   openCell(day: string, period: number) {
-    // const existing = this.assignments().get(this.cellKey(day, period));
-    // this.gradeControl.setValue(existing?.gradeName ?? '');
-    // this.subjectControl.setValue(existing?.subject ?? '');
-    //this.cellError.set(null);
+    this.gradeControl.setValue('');
+    this.subjectControl.setValue('');
     this.activeCell.set({ day, period });
   }
 
@@ -156,9 +154,25 @@ export class TimeTable {
   removeCell(day: string, period: number, event: Event): void {
     event.stopPropagation();
     const key = this.cellKey(day, period);
-    const map = new Map(this.assignments());
-    map.delete(key);
-    this.assignments.set(map);
+    const existing = this.assignments().get(key);
+
+    if (!existing) {
+      return;
+    }
+
+    this.timeTableService.deleteEntry(existing.entryId).subscribe({
+      next: () => {
+        const map = new Map(this.assignments());
+        map.delete(key);
+        this.assignments.set(map);
+        if (this.isActive(day, period)) {
+          this.activeCell.set(null);
+        }
+      },
+      error: (err) => {
+        console.error('Failed to delete timetable entry:', err);
+      }
+    });
   }
 
   isActive(day: string, period: number) {
