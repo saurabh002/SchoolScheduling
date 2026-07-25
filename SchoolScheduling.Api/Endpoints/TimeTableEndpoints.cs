@@ -44,7 +44,7 @@ namespace SchoolScheduling.Endpoints{
             DayOfWeek = dto.DayOfWeek,
             Subject = dto.Subject
         };
-
+        
         db.TimetableEntries.Add(entry);
         await db.SaveChangesAsync();
         return Results.Created($"/api/timetable/{entry.Id}", entry);
@@ -68,7 +68,7 @@ namespace SchoolScheduling.Endpoints{
         entry.PeriodId = dto.PeriodId;
         entry.DayOfWeek = dto.DayOfWeek;
         entry.Subject = dto.Subject;
-
+Console.WriteLine($"Updating TimetableEntry Id: {id}, ClassSectionId: {dto.ClassSectionId}, PeriodId: {dto.PeriodId}, DayOfWeek: {dto.DayOfWeek}, Subject: {dto.Subject}");
         await db.SaveChangesAsync();
         return Results.Ok(entry);
     }

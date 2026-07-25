@@ -23,6 +23,10 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<SchoolDbContext>();
     db.Database.EnsureCreated();
+
+    // Repair previously-seeded class-section name mismatch in existing DBs.
+    db.Database.ExecuteSqlRaw("UPDATE ClassSections SET Name = '4F' WHERE Id = 23 AND Name = '5F';");
+    db.Database.ExecuteSqlRaw("UPDATE ClassSections SET Name = '5F' WHERE Id = 29;");
 }
 
 app.UseCors();
